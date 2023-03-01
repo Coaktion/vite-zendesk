@@ -1,9 +1,16 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
+import ZAFClient from 'zendesk_app_framework_sdk';
 import './App.css'
+
+const zend = ZAFClient.init();
 
 function App() {
   const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    zend.invoke('resize', { width: '100%', height: 650 });
+  }, [])
 
   return (
     <div className="App">
