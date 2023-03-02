@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
-// import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import ZAFClient from 'zendesk_app_framework_sdk'
 import { GroupAdd, Group, Badge, LocationCity, ArrowBack } from '@mui/icons-material'
 import './github-user-data.scss'
-import { SidebarState } from '../..'
+import { SidebarState } from '..'
 
 type Props = {
     sidebarState: SidebarState
@@ -13,7 +13,7 @@ type Props = {
 const client = ZAFClient.init()
 
 const GithubUserData: React.FC<Props> = ({ sidebarState, goBack }: Props) => {
-    // const { t } = useTranslation()
+    const { t } = useTranslation()
     const { githubUserData: { user, repositories } } = sidebarState
 
     const handleRepository = (description: string, language: string): void => {
@@ -29,7 +29,7 @@ const GithubUserData: React.FC<Props> = ({ sidebarState, goBack }: Props) => {
             )
             client.invoke(
                 'notify', 
-                'presentation.pages.sidebar.components.github-user-data.success', 
+                t('presentation.apps.sidebar.github-user-data.success'), 
                 'success'
             )
         })
@@ -44,7 +44,7 @@ const GithubUserData: React.FC<Props> = ({ sidebarState, goBack }: Props) => {
             <div className='dataWrap' onClick={goBack}>
                 <span className='goBack'>
                     <ArrowBack />
-                    {'presentation.pages.sidebar.components.github-user-data.goback-button'}
+                    {t('presentation.apps.sidebar.github-user-data.goback-button')}
                 </span>
             </div>
             
@@ -56,12 +56,12 @@ const GithubUserData: React.FC<Props> = ({ sidebarState, goBack }: Props) => {
             <div className='dataWrap'>
                 <span>
                     <GroupAdd />
-                    {'presentation.pages.sidebar.components.github-user-data.followers'}:
+                    {t('presentation.apps.sidebar.github-user-data.followers')}:
                     <b>{user.followers}</b>
                 </span>
                 <span>
                     <Group />
-                    {'presentation.pages.sidebar.components.github-user-data.following'}:
+                    {t('presentation.apps.sidebar.github-user-data.following')}:
                     <b>{user.following}</b>
                 </span>    
             </div>
@@ -69,7 +69,7 @@ const GithubUserData: React.FC<Props> = ({ sidebarState, goBack }: Props) => {
             <div className='dataWrap'>
                 <span>
                     <Badge />
-                    {'presentation.pages.sidebar.components.github-user-data.name'}: 
+                    {t('presentation.apps.sidebar.github-user-data.name')}: 
                     <b>{user.name}</b>
                 </span>
             </div>
@@ -77,7 +77,7 @@ const GithubUserData: React.FC<Props> = ({ sidebarState, goBack }: Props) => {
             <div className='dataWrap'>
                 <span>
                     <LocationCity />
-                    {'presentation.pages.sidebar.components.github-user-data.city'}:
+                    {t('presentation.apps.sidebar.github-user-data.city')}:
                     <b>{user.location}</b>
                 </span>
             </div>

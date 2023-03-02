@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { TextField, Button, CircularProgress } from '@mui/material'
 import ZAFClient from 'zendesk_app_framework_sdk'
 import { ErrorMessage } from '../../components'
 import './sidebar.scss'
 import { GitHubUserModel, GitHubUserReposModel } from '../../../models/github-models'
-import { GithubUserData } from './components'
+import GithubUserData from './github-user-data'
 
 type GithubUserData = {
     user: GitHubUserModel
@@ -21,6 +22,7 @@ export type SidebarState = {
 const client = ZAFClient.init()
 
 const Sidebar: React.FC = () => {
+    const { t } = useTranslation()
     const [loading, setLoading] = useState(false)
     const [state, setState] = useState<SidebarState>({
         githubUser: '',
@@ -96,7 +98,7 @@ const Sidebar: React.FC = () => {
             <TextField
                 variant="outlined"
                 name="githubuser"
-                label={'Github User'}
+                label={t('presentation.apps.sidebar.label')}
                 onChange={handleChange}
                 fullWidth
             />
@@ -104,7 +106,7 @@ const Sidebar: React.FC = () => {
             <Button type="submit" variant="contained">
                 {loading ? 
                     <CircularProgress size={30} /> : 
-                    <>Search</> 
+                    <>{t('presentation.apps.sidebar.button')}</> 
                 }
             </Button>
         </form>
