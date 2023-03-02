@@ -1,0 +1,11 @@
+@import '../../styles/colors.scss';
+
+.errorWrap {
+    padding: 10px;
+    border: 1px solid $errorBorder;
+    border-radius: 5px;
+    background-color: $errorBackground;
+    color: $errorColor;
+    margin-top: 10px;
+    max-width: 99%;
+}
