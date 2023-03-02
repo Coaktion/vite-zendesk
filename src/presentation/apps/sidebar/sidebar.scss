@@ -1,0 +1,21 @@
+@import '../../styles/colors.scss';
+
+.sidebarWrap {
+    padding: 7px 0px;
+    overflow-y: hidden;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    button {
+        width: 20%;
+        align-self: flex-end;
+        margin-top: .7rem;
+        background-color: $primary;
+
+        &:hover {
+            background-color: $primaryLight;
+        }
+    }
+}

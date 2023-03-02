@@ -1,0 +1,1 @@
+export { default as GithubUserData } from './github-user-data'
