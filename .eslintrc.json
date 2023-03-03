@@ -25,7 +25,8 @@
                 "@typescript-eslint/restrict-template-expressions": "off",
                 "@typescript-eslint/triple-slash-reference": "off",
                 "curly": "off",
-                "@typescript-eslint/no-unsafe-argument": "off"
+                "@typescript-eslint/no-unsafe-argument": "off",
+                "@typescript-eslint/no-unsafe-return": "off"
             },
             "parserOptions": {
                 "project": ["./tsconfig.json", "./tsconfig.node.json", "./vite.config.ts"]

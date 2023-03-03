@@ -1,23 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {TextField, Button, CircularProgress} from '@mui/material';
-import {object, string} from 'yup';
 import {ErrorMessage} from '@/presentation/components';
 import {type GitHubUserModel, type GitHubUserReposModel} from '@/models/github-models';
+import {type SidebarState} from '@/interfaces';
+import {validationGithub} from './validation';
 import GithubUserData from './github-user-data';
 import './sidebar.scss';
-
-type GithubUserDataModel = {
-	user: GitHubUserModel;
-	repositories: GitHubUserReposModel[];
-};
-
-export type SidebarState = {
-	githubUser: string;
-	error: string;
-	userFound: boolean;
-	githubUserData: GithubUserDataModel;
-};
 
 type Props = {
 	zendesk: any;
@@ -41,29 +30,9 @@ const Sidebar: React.FC<Props> = ({zendesk}: Props) => {
 		zendesk.invoke('resize', {width: '100%', height: 170});
 	};
 
-	const validation = async (): Promise<boolean> => {
-		try {
-			const githubSchema = object({
-				githubUser: string()
-					.required(
-						t('presentation.apps.sidebar.validation.required') || '',
-					)
-					.min(3, t('presentation.apps.sidebar.validation.min') || ''),
-			});
-			await githubSchema.validate(state);
-			return true;
-		} catch (error: any) {
-			setState(current => ({
-				...current,
-				error: error.message,
-			}));
-			return false;
-		}
-	};
-
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
 		event.preventDefault();
-		const isValid = await validation();
+		const isValid = await validationGithub({state, setState});
 		if (!isValid) return;
 		setLoading(true);
 
@@ -104,10 +73,6 @@ const Sidebar: React.FC<Props> = ({zendesk}: Props) => {
 			setLoading(false);
 		}
 	};
-
-	useEffect(() => {
-		zendesk.invoke('resize', {width: '100%', height: 170});
-	}, []);
 
 	if (state.userFound)
 		return <GithubUserData goBack={goBack} sidebarState={state} zendesk={zendesk} />;
