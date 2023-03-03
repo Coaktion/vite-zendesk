@@ -7,8 +7,20 @@
   },
   "location": {
     "support": {
-      "new_ticket_sidebar": "http://localhost:8080?type=sidebar",
-      "ticket_sidebar": "http://localhost:8080?type=sidebar",
+      "new_ticket_sidebar": {
+        "url": "http://localhost:8080?type=sidebar",
+        "size": {
+          "height": 170,
+          "width": "100%"
+        }
+      },
+      "ticket_sidebar": {
+        "url": "http://localhost:8080?type=sidebar",
+        "size": {
+          "height": 170,
+          "width": "100%"
+        }
+      },
       "nav_bar": "http://localhost:8080?type=navbar"
     }
   },
