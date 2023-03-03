@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
 import {GroupAdd, Group, Badge, LocationCity, ArrowBack} from '@mui/icons-material';
-import {type SidebarState} from '@/presentation/apps/sidebar';
+import {type SidebarState} from '@/interfaces';
 import './github-user-data.scss';
 
 type Props = {
