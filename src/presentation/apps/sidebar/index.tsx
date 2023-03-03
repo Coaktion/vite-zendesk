@@ -2,10 +2,10 @@ import React, {useState, useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
 import {TextField, Button, CircularProgress} from '@mui/material';
 import {object, string} from 'yup';
-import {ErrorMessage} from '../../components';
-import './sidebar.scss';
-import {type GitHubUserModel, type GitHubUserReposModel} from '../../../models/github-models';
+import {ErrorMessage} from '@/presentation/components';
+import {type GitHubUserModel, type GitHubUserReposModel} from '@/models/github-models';
 import GithubUserData from './github-user-data';
+import './sidebar.scss';
 
 type GithubUserDataModel = {
 	user: GitHubUserModel;
@@ -109,9 +109,8 @@ const Sidebar: React.FC<Props> = ({zendesk}: Props) => {
 		zendesk.invoke('resize', {width: '100%', height: 170});
 	}, []);
 
-	if (state.userFound) {
-		return <GithubUserData goBack={goBack} sidebarState={state} />;
-	}
+	if (state.userFound)
+		return <GithubUserData goBack={goBack} sidebarState={state} zendesk={zendesk} />;
 
 	return (
 		<form onSubmit={handleSubmit} className='sidebarWrap'>
