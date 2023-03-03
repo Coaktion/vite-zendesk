@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
 import {TextField, Button, CircularProgress} from '@mui/material';
-import ZAFClient from 'zendesk_app_framework_sdk';
+import {object, string} from 'yup';
 import {ErrorMessage} from '../../components';
 import './sidebar.scss';
 import {type GitHubUserModel, type GitHubUserReposModel} from '../../../models/github-models';
@@ -19,9 +19,11 @@ export type SidebarState = {
 	githubUserData: GithubUserDataModel;
 };
 
-const client = ZAFClient.init();
+type Props = {
+	zendesk: any;
+};
 
-const Sidebar: React.FC = () => {
+const Sidebar: React.FC<Props> = ({zendesk}: Props) => {
 	const {t} = useTranslation();
 	const [loading, setLoading] = useState(false);
 	const [state, setState] = useState<SidebarState>({
@@ -35,16 +37,38 @@ const Sidebar: React.FC = () => {
 	});
 
 	const goBack = (): void => {
-		setState(current => ({...current, userFound: false}));
-		client.invoke('resize', {width: '100%', height: 170});
+		setState(current => ({...current, userFound: false, githubUser: ''}));
+		zendesk.invoke('resize', {width: '100%', height: 170});
+	};
+
+	const validation = async (): Promise<boolean> => {
+		try {
+			const githubSchema = object({
+				githubUser: string()
+					.required(
+						t('presentation.apps.sidebar.validation.required') || '',
+					)
+					.min(3, t('presentation.apps.sidebar.validation.min') || ''),
+			});
+			await githubSchema.validate(state);
+			return true;
+		} catch (error: any) {
+			setState(current => ({
+				...current,
+				error: error.message,
+			}));
+			return false;
+		}
 	};
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
 		event.preventDefault();
+		const isValid = await validation();
+		if (!isValid) return;
 		setLoading(true);
 
 		try {
-			const response = await client.request({
+			const response = await zendesk.request({
 				url: `https://api.github.com/users/${state.githubUser}`,
 				headers: {
 					'Content-Type': 'application/json',
@@ -54,7 +78,7 @@ const Sidebar: React.FC = () => {
 			});
 			const user = response.responseJSON as GitHubUserModel;
 
-			const response2 = await client.request({
+			const response2 = await zendesk.request({
 				url: user.repos_url,
 				headers: {
 					'Content-Type': 'application/json',
@@ -81,14 +105,8 @@ const Sidebar: React.FC = () => {
 		}
 	};
 
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-		setState(current => ({
-			...current, githubUser: event.target.value, error: '',
-		}));
-	};
-
 	useEffect(() => {
-		client.invoke('resize', {width: '100%', height: 170});
+		zendesk.invoke('resize', {width: '100%', height: 170});
 	}, []);
 
 	if (state.userFound) {
@@ -101,7 +119,11 @@ const Sidebar: React.FC = () => {
 				variant='outlined'
 				name='githubuser'
 				label={t('presentation.apps.sidebar.label')}
-				onChange={handleChange}
+				onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+					setState(current => ({
+						...current, githubUser: event.target.value, error: '',
+					}));
+				}}
 				fullWidth
 			/>
 			{state.error && <ErrorMessage error={state.error} />}
