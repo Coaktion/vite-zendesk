@@ -2,7 +2,8 @@ import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {TextField, Button, CircularProgress} from '@mui/material';
 import {ErrorMessage} from '@/presentation/components';
-import {type GitHubUserModel, type GitHubUserReposModel} from '@/models/github-models';
+import {type GitHubUserModel} from '@/models/github-models';
+import {type GithubClient} from '@/clients/github-client';
 import {type SidebarState} from '@/interfaces';
 import {validationGithub} from './validation';
 import GithubUserData from './github-user-data';
@@ -10,9 +11,10 @@ import './sidebar.scss';
 
 type Props = {
 	zendesk: any;
+	githubClient: GithubClient;
 };
 
-const Sidebar: React.FC<Props> = ({zendesk}: Props) => {
+const Sidebar: React.FC<Props> = ({zendesk, githubClient}: Props) => {
 	const {t} = useTranslation();
 	const [loading, setLoading] = useState(false);
 	const [state, setState] = useState<SidebarState>({
@@ -37,26 +39,9 @@ const Sidebar: React.FC<Props> = ({zendesk}: Props) => {
 		setLoading(true);
 
 		try {
-			const response = await zendesk.request({
-				url: `https://api.github.com/users/${state.githubUser}`,
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				type: 'GET',
-				httpCompleteResponse: true,
-			});
-			const user = response.responseJSON as GitHubUserModel;
-
-			const response2 = await zendesk.request({
-				url: user.repos_url,
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				type: 'GET',
-				httpCompleteResponse: true,
-			});
-			const repositories = response2.responseJSON as GitHubUserReposModel[];
-
+			const {data} = await githubClient.fetch(state.githubUser);
+			const user = data as GitHubUserModel;
+			const repositories = await githubClient.getRepositories(user.repos_url);
 			setState(current =>
 				({
 					...current,
@@ -68,7 +53,7 @@ const Sidebar: React.FC<Props> = ({zendesk}: Props) => {
 		} catch (error: any) {
 			setState(current => ({
 				...current,
-				error: error.message,
+				error: error.message || t('presentation.apps.sidebar.default-error'),
 			}));
 			setLoading(false);
 		}
