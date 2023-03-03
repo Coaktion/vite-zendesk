@@ -7,6 +7,7 @@ export const portuguese = {
 					min: 'Informe no mínimo 3 caracteres',
 				},
 				button: 'Buscar',
+				'default-error': 'Falha ao buscar usuário',
 				label: 'Informe o nome do usuário GitHub',
 				'github-user-data': {
 					success: 'Dados enviados ao ticket!',
