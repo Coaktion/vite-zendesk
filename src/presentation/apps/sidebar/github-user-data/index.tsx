@@ -1,13 +1,14 @@
 import React, {useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
 import {GroupAdd, Group, Badge, LocationCity, ArrowBack} from '@mui/icons-material';
+import {type Zendesk} from '@/services';
 import {type SidebarState} from '@/interfaces';
 import './github-user-data.scss';
 
 type Props = {
 	sidebarState: SidebarState;
 	goBack: () => void;
-	zendesk: any;
+	zendesk: Zendesk;
 };
 
 const GithubUserData: React.FC<Props> = ({sidebarState, goBack, zendesk}: Props) => {
@@ -15,26 +16,16 @@ const GithubUserData: React.FC<Props> = ({sidebarState, goBack, zendesk}: Props)
 	const {githubUserData: {user, repositories}} = sidebarState;
 
 	const handleRepository = (description: string, language: string): void => {
-		zendesk.metadata().then((response: any) => {
-			const {settings} = response;
-			zendesk.set(
-				`ticket.customField:custom_field_${settings.repo_description_id}`,
-				description,
-			);
-			zendesk.set(
-				`ticket.customField:custom_field_${settings.repo_language_id}`,
-				language,
-			);
-			zendesk.invoke(
-				'notify',
-				t('presentation.apps.sidebar.github-user-data.success'),
-				'success',
-			);
-		});
+		zendesk.setTicketField(zendesk._settings.repo_description_id, description);
+		zendesk.setTicketField(zendesk._settings.repo_language_id, language);
+		zendesk.notify(
+			t('presentation.apps.sidebar.github-user-data.success'),
+			'success',
+		);
 	};
 
 	useEffect(() => {
-		zendesk.invoke('resize', {width: '100%', height: 700});
+		zendesk.resize('100%', 700);
 	}, []);
 
 	return (

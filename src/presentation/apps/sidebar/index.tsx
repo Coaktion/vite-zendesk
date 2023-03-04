@@ -1,16 +1,16 @@
 import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {TextField, Button, CircularProgress} from '@mui/material';
-import {ErrorMessage} from '@/presentation/components';
-import {type GitHubUserModel} from '@/models/github-models';
-import {type GithubClient} from '@/clients/github-client';
+import {type GithubClient, type Zendesk} from '@/services';
 import {type SidebarState} from '@/interfaces';
+import {type GitHubUserModel} from '@/models/github-models';
+import {ErrorMessage} from '@/presentation/components';
 import {validationGithub} from './validation';
 import GithubUserData from './github-user-data';
 import './sidebar.scss';
 
 type Props = {
-	zendesk: any;
+	zendesk: Zendesk;
 	githubClient: GithubClient;
 };
 
@@ -29,7 +29,7 @@ const Sidebar: React.FC<Props> = ({zendesk, githubClient}: Props) => {
 
 	const goBack = (): void => {
 		setState(current => ({...current, userFound: false, githubUser: ''}));
-		zendesk.invoke('resize', {width: '100%', height: 170});
+		zendesk.resize();
 	};
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
