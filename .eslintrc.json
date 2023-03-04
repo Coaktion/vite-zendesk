@@ -17,6 +17,8 @@
                 "*.tsx"
             ],
             "rules": {
+                "@typescript-eslint/no-confusing-void-expression": "off",
+                "@typescript-eslint/naming-convention": "off",
                 "@typescript-eslint/no-unsafe-call": "off",
                 "@typescript-eslint/prefer-nullish-coalescing": "off",
                 "@typescript-eslint/no-floating-promises": "off",
