@@ -1,17 +1,24 @@
-import React from 'react';
-import {type GithubClient} from './clients/github-client';
-import {Sidebar} from './presentation/apps';
+import React, {useEffect, useState} from 'react';
+import {Zendesk} from './services';
+import {MakeSidebar} from './factories/sidebar';
+import {useZendesk} from './presentation/hooks/use-zendesk';
 
-type Props = {
-	zendesk: any;
-	githubClient: GithubClient;
-};
+const MainApp: React.FC = () => {
+	const {setZendesk} = useZendesk();
+	const [loading, setLoading] = useState(true);
 
-const MainApp: React.FC<Props> = ({zendesk, githubClient}: Props) => {
+	useEffect(() => {
+		const zendesk = new Zendesk();
+		setZendesk(zendesk);
+		zendesk.getSettings().then(() => setLoading(false));
+	}, []);
+
+	if (loading) return <div>Loading...</div>;
+
 	const urlParams = new URLSearchParams(window.location.search);
 	const destinationApp = urlParams.get('type') ?? urlParams.get('modal');
 
-	if (destinationApp === 'sidebar') return <Sidebar zendesk={zendesk} githubClient={githubClient} />;
+	if (destinationApp === 'sidebar') return <MakeSidebar />;
 
 	return <div>Not found</div>;
 };
