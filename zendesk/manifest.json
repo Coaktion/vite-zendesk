@@ -42,6 +42,11 @@
       "name": "repo_language_id",
       "required": true,
       "default": "8146034435219"
+    },
+    {
+      "name": "base_url",
+      "required": true,
+      "default": "https://api.github.com"
     }
   ],
   "frameworkVersion": "2.0"
