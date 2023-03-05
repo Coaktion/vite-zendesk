@@ -1,5 +1,5 @@
 import React, {createContext, type ReactNode, useContext, useMemo, useState} from 'react';
-import {type Zendesk} from '@/services/zendesk';
+import {type Zendesk} from '@/services';
 
 type ContextProps = {
 	zendesk: Zendesk;

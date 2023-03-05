@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {TextField, Button, CircularProgress} from '@mui/material';
 import {type GithubClient, type Zendesk} from '@/services';
@@ -58,6 +58,10 @@ const Sidebar: React.FC<Props> = ({zendesk, githubClient}: Props) => {
 			setLoading(false);
 		}
 	};
+
+	useEffect(() => {
+		zendesk.resize();
+	}, []);
 
 	if (state.userFound)
 		return <GithubUserData goBack={goBack} sidebarState={state} zendesk={zendesk} />;
