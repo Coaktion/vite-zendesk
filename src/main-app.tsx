@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Zendesk} from './services';
-import {MakeSidebar} from './factories/sidebar';
+import {MakeSidebar, MakeNavbar} from './factories';
 import {useZendesk} from './presentation/hooks/use-zendesk';
 
 const MainApp: React.FC = () => {
@@ -19,6 +19,7 @@ const MainApp: React.FC = () => {
 	const destinationApp = urlParams.get('type') ?? urlParams.get('modal');
 
 	if (destinationApp === 'sidebar') return <MakeSidebar />;
+	if (destinationApp === 'navbar') return <MakeNavbar />;
 
 	return <div>Not found</div>;
 };
