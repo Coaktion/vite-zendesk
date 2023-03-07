@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import MainApp from './main-app';
-import {ZendeskProvider} from './presentation/hooks/use-zendesk';
+import {ZendeskProvider} from '@coaktion/zendesk-clients-react';
 import './presentation/styles/global.scss';
 import './presentation/translations';
 

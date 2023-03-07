@@ -1,16 +1,22 @@
 import React, {useEffect, useState} from 'react';
-import {Zendesk} from './services';
-import {MakeSidebar, MakeNavbar} from './factories';
-import {useZendesk} from './presentation/hooks/use-zendesk';
+import ZAFClient from 'zendesk_app_framework_sdk';
+import {useZendesk} from '@coaktion/zendesk-clients-react';
+import MakeBaseComponent from '@/factory';
+import {type Settings} from './interfaces';
+
+let settings: Settings;
 
 const MainApp: React.FC = () => {
 	const {setZendesk} = useZendesk();
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		const zendesk = new Zendesk();
+		const zendesk = ZAFClient.init();
 		setZendesk(zendesk);
-		zendesk.getSettings().then(() => setLoading(false));
+		zendesk.on('app.registered', async (data: any) => {
+			settings = data.metadata.settings as Settings;
+			setLoading(false);
+		});
 	}, []);
 
 	if (loading) return <div>Loading...</div>;
@@ -18,10 +24,7 @@ const MainApp: React.FC = () => {
 	const urlParams = new URLSearchParams(window.location.search);
 	const destinationApp = urlParams.get('type') ?? urlParams.get('modal');
 
-	if (destinationApp === 'sidebar') return <MakeSidebar />;
-	if (destinationApp === 'navbar') return <MakeNavbar />;
-
-	return <div>Not found</div>;
+	return <MakeBaseComponent type={destinationApp} settings={settings} />;
 };
 
 export default MainApp;

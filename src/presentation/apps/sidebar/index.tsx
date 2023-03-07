@@ -1,20 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {TextField, Button, CircularProgress} from '@mui/material';
-import {type GithubClient, type Zendesk} from '@/services';
-import {type SidebarState} from '@/interfaces';
-import {type GitHubUserModel} from '@/models/github-models';
+import {type BaseComponentProps, type SidebarState} from '@/interfaces';
+import {type GitHubUserReposModel, type GitHubUserModel} from '@/models/github-models';
 import {ErrorMessage} from '@/presentation/components';
 import {validationGithub} from './validation';
 import GithubUserData from './github-user-data';
 import './sidebar.scss';
 
-type Props = {
-	zendesk: Zendesk;
-	githubClient: GithubClient;
-};
-
-const Sidebar: React.FC<Props> = ({zendesk, githubClient}: Props) => {
+const Sidebar: React.FC<BaseComponentProps> = ({githubClient, tickets}: BaseComponentProps) => {
 	const {t} = useTranslation();
 	const [loading, setLoading] = useState(false);
 	const [state, setState] = useState<SidebarState>({
@@ -29,7 +23,7 @@ const Sidebar: React.FC<Props> = ({zendesk, githubClient}: Props) => {
 
 	const goBack = (): void => {
 		setState(current => ({...current, userFound: false, githubUser: ''}));
-		zendesk.resize();
+		tickets.resizeFrame();
 	};
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
@@ -41,7 +35,9 @@ const Sidebar: React.FC<Props> = ({zendesk, githubClient}: Props) => {
 		try {
 			const {data} = await githubClient.fetch(state.githubUser);
 			const user = data as GitHubUserModel;
-			const repositories = await githubClient.getRepositories(user.repos_url);
+			const {data: dataRepositories} = await githubClient.getRepositories(user.repos_url);
+			const repositories = dataRepositories as GitHubUserReposModel[];
+
 			setState(current =>
 				({
 					...current,
@@ -60,11 +56,11 @@ const Sidebar: React.FC<Props> = ({zendesk, githubClient}: Props) => {
 	};
 
 	useEffect(() => {
-		zendesk.resize();
+		tickets.resizeFrame();
 	}, []);
 
 	if (state.userFound)
-		return <GithubUserData goBack={goBack} sidebarState={state} zendesk={zendesk} />;
+		return <GithubUserData goBack={goBack} sidebarState={state} zendesk={tickets} />;
 
 	return (
 		<form onSubmit={handleSubmit} className='sidebarWrap'>

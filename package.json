@@ -9,12 +9,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@coaktion/aktie-clients": "^0.1.4",
+    "@coaktion/zendesk-clients-react": "^0.1.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "zendesk_app_framework_sdk": "^2.0.11"
   },
   "devDependencies": {
-    "@coaktion/client-core": "^1.1.2",
     "@emotion/styled": "^11.10.6",
     "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.11.11",

@@ -1,4 +1,6 @@
 import {type GitHubUserModel, type GitHubUserReposModel} from '@/models/github-models';
+import {type GithubClient} from '@coaktion/aktie-clients';
+import {type ZendeskTicketsClient, type ZendeskUsersClient} from '@coaktion/zendesk-clients-react';
 
 type GithubUserDataModel = {
 	user: GitHubUserModel;
@@ -18,3 +20,11 @@ export type Settings = {
 	repo_language_id: string;
 	base_url: string;
 };
+
+export type BaseComponentProps = {
+	zendesk: any;
+	tickets: ZendeskTicketsClient;
+	users: ZendeskUsersClient;
+	githubClient: GithubClient;
+};
+

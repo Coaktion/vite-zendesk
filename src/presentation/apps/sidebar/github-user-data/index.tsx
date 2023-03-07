@@ -1,14 +1,14 @@
 import React, {useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
 import {GroupAdd, Group, Badge, LocationCity, ArrowBack} from '@mui/icons-material';
-import {type Zendesk} from '@/services';
 import {type SidebarState} from '@/interfaces';
 import './github-user-data.scss';
+import {type ZendeskTicketsClient} from '@coaktion/zendesk-clients-react';
 
 type Props = {
 	sidebarState: SidebarState;
 	goBack: () => void;
-	zendesk: Zendesk;
+	zendesk: ZendeskTicketsClient;
 };
 
 const GithubUserData: React.FC<Props> = ({sidebarState, goBack, zendesk}: Props) => {
@@ -16,16 +16,16 @@ const GithubUserData: React.FC<Props> = ({sidebarState, goBack, zendesk}: Props)
 	const {githubUserData: {user, repositories}} = sidebarState;
 
 	const handleRepository = (description: string, language: string): void => {
-		zendesk.setTicketField(zendesk._settings.repo_description_id, description);
-		zendesk.setTicketField(zendesk._settings.repo_language_id, language);
-		zendesk.notify(
+		// Zendesk.setTicketField(zendesk._settings.repo_description_id, description);
+		// zendesk.setTicketField(zendesk._settings.repo_language_id, language);
+		zendesk.notifyUser(
 			t('presentation.apps.sidebar.github-user-data.success'),
 			'success',
 		);
 	};
 
 	useEffect(() => {
-		zendesk.resize('100%', 700);
+		zendesk.resizeFrame(700);
 	}, []);
 
 	return (
