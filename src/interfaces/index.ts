@@ -1,6 +1,6 @@
-import {type GitHubUserModel, type GitHubUserReposModel} from '@/models/github-models';
 import {type GithubClient} from '@coaktion/aktie-clients';
 import {type ZendeskTicketsClient, type ZendeskUsersClient} from '@coaktion/zendesk-clients-react';
+import {type GitHubUserModel, type GitHubUserReposModel} from '@/models/github-models';
 
 type GithubUserDataModel = {
 	user: GitHubUserModel;

@@ -1,9 +1,9 @@
 import React from 'react';
 import {screen, waitFor, render} from '@testing-library/react';
+import {ZendeskTicketsClient} from '@coaktion/zendesk-clients-react';
 import GithubUserData from '@/presentation/apps/sidebar/github-user-data';
 import {baseComponentMock} from '@/tests/mocks/base-component';
-import {ZendeskTicketsClient} from '@coaktion/zendesk-clients-react';
-import {SidebarStateMock} from '@/tests/mocks/sidebar-state';
+import {SidebarStateMock} from '@/tests/mocks/sidebar';
 
 const baseComponentProps = baseComponentMock();
 

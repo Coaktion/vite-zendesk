@@ -1,5 +1,5 @@
-import {SidebarStateMock} from '@/tests/mocks/sidebar-state';
 import {validationGithub} from '@/presentation/apps/sidebar/validation';
+import {SidebarStateMock} from '@/tests/mocks/sidebar';
 
 jest.mock('i18next', () => ({
 	t: (key: string) => key,

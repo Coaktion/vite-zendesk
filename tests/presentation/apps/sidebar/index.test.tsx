@@ -1,10 +1,10 @@
 import React from 'react';
 import {render, screen, waitFor, fireEvent} from '@testing-library/react';
-import {Sidebar} from '@/presentation/apps';
-import {baseComponentMock} from '@/tests/mocks/base-component';
 import {ZendeskTicketsClient} from '@coaktion/zendesk-clients-react';
 import {GithubClient} from '@coaktion/aktie-clients';
-import {GithubUserModelMock, GitHubUserReposModelMock} from '@/tests/mocks/sidebar-state';
+import {Sidebar} from '@/presentation/apps';
+import {baseComponentMock} from '@/tests/mocks/base-component';
+import {GithubUserModelMock, GitHubUserReposModelMock} from '@/tests/mocks/sidebar';
 
 const baseComponentProps = baseComponentMock();
 
