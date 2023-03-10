@@ -5,8 +5,8 @@ type Props = {
 	error: string;
 };
 
-const ErrorMessage: React.FC<Props> = ({error = 'Falha'}: Props) => (
-	<div className='errorWrap'>{error}</div>
+const ErrorMessage: React.FC<Props> = ({error}: Props) => (
+	<div className='errorWrap' data-testid='errorWrap'>{error}</div>
 );
 
 export default ErrorMessage;
