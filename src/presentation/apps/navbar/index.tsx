@@ -2,7 +2,7 @@ import {type BaseComponentProps} from '@/interfaces';
 import React from 'react';
 
 const Navbar: React.FC<BaseComponentProps> = ({zendesk, githubClient}: BaseComponentProps) => (
-	<div>
+	<div data-testid='navbarWrap'>
         Isso é um navbar
 	</div>
 );
