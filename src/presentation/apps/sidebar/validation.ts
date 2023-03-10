@@ -4,10 +4,9 @@ import {type SidebarState} from '@/interfaces';
 
 type Props = {
 	state: SidebarState;
-	setState: React.Dispatch<React.SetStateAction<SidebarState>>;
 };
 
-export const validationGithub = async ({setState, state}: Props): Promise<boolean> => {
+export const validationGithub = async ({state}: Props): Promise<string> => {
 	try {
 		const githubSchema = object({
 			githubUser: string()
@@ -17,12 +16,8 @@ export const validationGithub = async ({setState, state}: Props): Promise<boolea
 				.min(3, t('presentation.apps.sidebar.validation.min') || ''),
 		});
 		await githubSchema.validate(state);
-		return true;
+		return '';
 	} catch (error: any) {
-		setState(current => ({
-			...current,
-			error: String(error.message),
-		}));
-		return false;
+		return error.message;
 	}
 };
