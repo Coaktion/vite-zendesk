@@ -26,5 +26,6 @@ export type BaseComponentProps = {
 	tickets: ZendeskTicketsClient;
 	users: ZendeskUsersClient;
 	githubClient: GithubClient;
+	settings: Settings;
 };
 

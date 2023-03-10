@@ -21,6 +21,7 @@ const MakeBaseComponent: React.FC<Props> = ({type, settings}: Props) => {
 		githubClient={githubClient}
 		tickets={tickets}
 		users={users}
+		settings={settings}
 	/>;
 };
 
