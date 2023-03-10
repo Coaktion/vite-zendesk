@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import ZAFClient from 'zendesk_app_framework_sdk';
 import {useZendesk} from '@coaktion/zendesk-clients-react';
-import MakeBaseComponent from '@/factory';
+import MakeBaseComponent from './factory';
 import {type Settings} from './interfaces';
 
 let settings: Settings;
