@@ -6,11 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && sh ./scripts/genBuildPackage.sh",
-    "preview": "vite preview"
+    "test": "jest --passWithNoTests --no-cache --runInBand",
+    "test:coverage": "npm run test --coverage"
   },
   "dependencies": {
     "@coaktion/aktie-clients": "^0.1.4",
     "@coaktion/zendesk-clients-react": "^0.1.2",
+    "@testing-library/react": "^14.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "zendesk_app_framework_sdk": "^2.0.11"
@@ -19,6 +21,8 @@
     "@emotion/styled": "^11.10.6",
     "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.11.11",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@types/jest": "^29.4.0",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@typescript-eslint/eslint-plugin": "^5.54.0",
@@ -30,11 +34,75 @@
     "eslint-plugin-react": "^7.32.2",
     "i18next": "^22.4.10",
     "i18next-xhr-backend": "^3.2.2",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^29.5.0",
+    "jest-environment-jsdom": "^29.5.0",
     "react-i18next": "^12.2.0",
     "sass": "^1.58.3",
+    "ts-jest": "^29.0.5",
     "typescript": "^4.9.5",
     "vite": "^4.1.0",
     "vite-tsconfig-paths": "^4.0.5",
     "yup": "^1.0.2"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "jsdom",
+    "verbose": true,
+    "roots": [
+      "<rootDir>/src",
+      "<rootDir>/tests"
+    ],
+    "testMatch": [
+      "**/*.test.{ts,tsx}"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/node_modules/",
+      "<rootDir>/dist/"
+    ],
+    "modulePathIgnorePatterns": [
+      "<rootDir>/dist/"
+    ],
+    "transform": {
+      ".+\\.(ts|tsx)$": "ts-jest"
+    },
+    "moduleNameMapper": {
+      "@/tests/(.*)": "<rootDir>/tests/$1",
+      "@/(.*)": "<rootDir>/src/$1",
+      "\\.scss$": "identity-obj-proxy"
+    },
+    "collectCoverage": true,
+    "setupFilesAfterEnv": ["<rootDir>/tests/config/jest-setup.ts"],
+    "collectCoverageFrom": [
+      "<rootDir>/**/*.{ts,tsx}",
+      "!<rootDir>/src/**/index.ts",
+      "!<rootDir>/src/**/main*",
+      "!<rootDir>/src/**/factory*",
+      "!<rootDir>/tests/mocks/*",
+      "!<rootDir>/src/**/translations/**",
+      "!**/*.d.ts"
+    ],
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "text",
+      "clover"
+    ],
+    "coverageDirectory": "coverage",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/",
+      "/src/index.ts",
+      "/src/locales/",
+      "types.ts"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 10,
+        "functions": 10,
+        "lines": 10,
+        "statements": 10
+      }
+    }
   }
 }
