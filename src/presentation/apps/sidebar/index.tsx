@@ -8,7 +8,9 @@ import {validationGithub} from './validation';
 import GithubUserData from './github-user-data';
 import './sidebar.scss';
 
-const Sidebar: React.FC<BaseComponentProps> = ({githubClient, tickets}: BaseComponentProps) => {
+const Sidebar: React.FC<BaseComponentProps> = ({
+	githubClient, tickets, settings}: BaseComponentProps,
+) => {
 	const {t} = useTranslation();
 	const [loading, setLoading] = useState(false);
 	const [state, setState] = useState<SidebarState>({
@@ -21,15 +23,16 @@ const Sidebar: React.FC<BaseComponentProps> = ({githubClient, tickets}: BaseComp
 		},
 	});
 
-	const goBack = (): void => {
-		setState(current => ({...current, userFound: false, githubUser: ''}));
-		tickets.resizeFrame();
-	};
-
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
 		event.preventDefault();
-		const isValid = await validationGithub({state, setState});
-		if (!isValid) return;
+		const hasError = await validationGithub({state});
+		if (hasError) {
+			setState(current => (
+				{...current, error: hasError}
+			));
+			return;
+		}
+
 		setLoading(true);
 
 		try {
@@ -59,13 +62,23 @@ const Sidebar: React.FC<BaseComponentProps> = ({githubClient, tickets}: BaseComp
 		tickets.resizeFrame();
 	}, []);
 
-	if (state.userFound)
-		return <GithubUserData goBack={goBack} sidebarState={state} zendesk={tickets} />;
+	if (state.userFound) {
+		return (
+			<GithubUserData
+				setState={setState}
+				sidebarState={state}
+				zendesk={tickets}
+				settings={settings}
+			/>
+		);
+	}
 
 	return (
-		<form onSubmit={handleSubmit} className='sidebarWrap'>
+		<form data-testid='sidebarWrap' onSubmit={handleSubmit} className='sidebarWrap'>
 			<TextField
 				variant='outlined'
+				data-testid='sidebar-input'
+				inputProps={{'data-testid': 'content-input'}}
 				name='githubuser'
 				label={t('presentation.apps.sidebar.label')}
 				onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,9 +89,9 @@ const Sidebar: React.FC<BaseComponentProps> = ({githubClient, tickets}: BaseComp
 				fullWidth
 			/>
 			{state.error && <ErrorMessage error={state.error} />}
-			<Button type='submit' variant='contained'>
+			<Button data-testid='sidebar-button' type='submit' variant='contained'>
 				{loading
-					? <CircularProgress size={30} />
+					? <CircularProgress data-testid='sidebar-spinner' size={30} />
 					: <>{t('presentation.apps.sidebar.button')}</>
 				}
 			</Button>
